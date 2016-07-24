@@ -1501,7 +1501,7 @@ var Gmail = function(localJQuery) {
 
       parsed.push({
         id: x[0],
-        title : x[9],
+        title: x[9].replace(/^<b>|<\/b>$/g, ""),
         excerpt : x[10],
         time : x[15],
         sender : x[28],
