@@ -268,7 +268,7 @@ var Gmail = function(localJQuery) {
 
 
   api.check.is_inside_email = function() {
-    if(api.get.current_page() != 'email' && !api.check.is_preview_pane()) {
+    if(api.get.current_page() !== null && !api.check.is_preview_pane()) {
       return false;
     }
 
@@ -1613,21 +1613,25 @@ var Gmail = function(localJQuery) {
 
 
   api.get.current_page = function() {
-    var hash  = window.location.hash.split('#').pop().split('?').shift() || 'inbox';
+    var hash = window.location.hash.split('#').pop().split('?').shift().split("/") || [null];
     var pages = ['sent', 'inbox', 'starred', 'drafts', 'imp', 'chats', 'all', 'spam', 'trash',
-                 'settings', 'label', 'category', 'circle', 'search'];
+                 'settings', 'label', 'category', 'circle', 'search', 'advanced-search'];
 
     var page = null;
 
-    if($.inArray(hash, pages) > -1) {
-      page = hash;
+    if ($.inArray(hash[0], pages) > -1) {
+      if (hash[0] == 'search' || hash[0] == 'label') {
+        page = hash[0] + "/" + hash[1];
+      } else {
+        page = hash[0];
+      }
     }
 
-    if(hash.indexOf('inbox/') !== -1) {
-      page = 'email';
+    if (page == 'inbox' && hash.length == 2 && hash[1].length == 16) {
+      return 'email';
     }
 
-    return page || hash;
+    return page;
   }
 
 
