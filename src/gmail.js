@@ -1731,6 +1731,7 @@ var Gmail = function(localJQuery) {
         data.total_threads = x[8];
         data.people_involved = x[15];
         data.subject = x[23];
+        data.thread_labels = x[11];
       }
 
       if(x[0] == 'ms') {
